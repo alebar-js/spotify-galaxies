@@ -42,7 +42,7 @@ const Home: NextPage = () => {
       <p>Here are your top artists</p>
       <ul>
         {topArtists.map((artist) => (
-          <li>{artist}</li>
+          <li key={artist}>{artist}</li>
         ))}
       </ul>
 

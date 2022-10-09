@@ -52,5 +52,5 @@ export type Track = {
   available_markets?: string[];
   id: string;
   name: string;
-  preview_url?: string;
+  preview_url: string;
 };

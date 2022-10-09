@@ -97,6 +97,7 @@ const ThreeFiberPage = () => {
                 artists={orbit}
                 radius={i * 4}
                 position={new THREE.Vector3(0, 0, 0)}
+                key={i}
                 //@ts-ignore
                 cameraPosition={cameraRef.current.object.position}
               />

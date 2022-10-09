@@ -1,5 +1,5 @@
 import { NextApiRequest, NextApiResponse } from 'next';
-import NextAuth, { Awaitable, NextAuthOptions, Session } from 'next-auth';
+import NextAuth, { JWT, NextAuthOptions, Session, User } from 'next-auth';
 import Spotify, { SpotifyProfile } from 'next-auth/providers/spotify';
 
 const options: NextAuthOptions = {
@@ -28,6 +28,7 @@ const options: NextAuthOptions = {
       return token;
     },
     session: async ({ token, user, session }) => {
+      //@ts-ignore
       session = { ...session, token, ...user };
       return session;
     },

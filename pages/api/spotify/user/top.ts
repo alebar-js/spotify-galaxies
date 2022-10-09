@@ -1,3 +1,4 @@
+import { url } from 'inspector';
 import { NextApiRequest, NextApiResponse } from 'next';
 import { getSession } from 'next-auth/react';
 import { getUserTopItems } from '../../../../lib/spotify';
@@ -5,7 +6,7 @@ import { getUserTopItems } from '../../../../lib/spotify';
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   const session = await getSession({ req });
   const { timeRange, limit, type } = req.query;
-  //@ts-ignore
+
   const accessToken = session?.token?.accessToken;
 
   //@ts-ignore

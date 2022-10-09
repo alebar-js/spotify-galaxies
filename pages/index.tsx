@@ -12,7 +12,7 @@ import { Artist } from '../types';
 const Home: NextPage = () => {
   const session: SessionContextValue = useSession();
   const user = session.data?.user;
-  const [topArtists, setTopArtists] = useState<string[]>([]);
+  const [topArtists, setTopArtists] = useState<Artist[]>([]);
 
   useEffect(() => {
     fetch('/api/spotify/user/top?type=artists&limit=50&timeRange=short_term')
@@ -20,13 +20,28 @@ const Home: NextPage = () => {
         return res.json();
       })
       .then((data) => {
-        let artists: Array<string> = [];
+        let artists: Array<Artist> = [];
         data.items.forEach((item: Artist) => {
-          artists = [...artists, item.name];
+          artists = [...artists, item];
         });
         setTopArtists(artists);
       });
   }, []);
+
+  const showRelatedArtists = (artistId: string): void => {
+    fetch(`/api/spotify/artist/${artistId}/related-artists`)
+      .then((res) => {
+        return res.json();
+      })
+      .then((data) => {
+        let artists: Array<Artist> = [];
+        console.log(data);
+        data.items.artists.forEach((item: Artist) => {
+          artists = [...artists, item];
+        });
+        setTopArtists(artists);
+      });
+  };
 
   if (!session || session.status === 'unauthenticated') {
     return (
@@ -42,7 +57,13 @@ const Home: NextPage = () => {
       <p>Here are your top artists</p>
       <ul>
         {topArtists.map((artist) => (
-          <li key={artist}>{artist}</li>
+          <li
+            key={artist.id}
+            style={{ cursor: 'pointer' }}
+            onClick={() => showRelatedArtists(artist.id!)}
+          >
+            {artist.name}
+          </li>
         ))}
       </ul>
 

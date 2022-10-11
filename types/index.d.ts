@@ -1,4 +1,5 @@
 import { JWT } from 'next-auth/jwt';
+import { SpotifyProfile } from 'next-auth/providers/spotify';
 
 declare module 'next-auth/client' {
   export interface Session {
@@ -21,18 +22,32 @@ type Image = {
   width: number;
 };
 
+export type SpotifyAPIResponse<T> = {
+  items: Array<T>;
+};
+
+export type Track = {
+  album: Album;
+  artists: Artist[];
+  available_markets?: string[];
+  id: string;
+  name: string;
+  preview_url: string;
+};
+
+export type PlaylistItem = {
+  added_at: string;
+  added_by: SpotifyProfile;
+  is_local: boolean;
+  track: Track;
+};
 export type Artist = {
   name: string;
   genres?: string[];
-  images?: Image[];
+  images: Image[];
   external_urls?: SpotifyUrls;
   followers?: Followers;
   id?: string;
-};
-
-type Planet = {
-  position: THREE.Vector3;
-  artist: Artist;
 };
 
 export type Album = {
@@ -44,13 +59,9 @@ export type Album = {
   release_date: string;
 };
 
-type LayoutName = 'helix' | 'sphere' | 'table' | 'grid';
-
-export type Track = {
-  album: Album;
-  artists: Artist[];
-  available_markets?: string[];
-  id: string;
-  name: string;
-  preview_url: string;
+type Planet = {
+  position: THREE.Vector3;
+  artist: Artist;
 };
+
+type LayoutName = 'helix' | 'sphere' | 'table' | 'grid';

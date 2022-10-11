@@ -1,0 +1,26 @@
+.headerContainer {
+  position: relative;
+  top: 0;
+  font-family: Helvetica, Arial, sans-serif;
+  font-size: 16px;
+  font-weight: 700;
+  display: flex;
+  justify-content: space-between;
+  height: 80px;
+}
+
+.brand {
+}
+
+.nav {
+  display: inline-block;
+}
+
+.navItems {
+  list-style: none;
+  display: inline-block;
+}
+
+.navItem {
+  display: inline-block;
+}

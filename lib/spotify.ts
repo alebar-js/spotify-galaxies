@@ -78,3 +78,26 @@ export const getArtistRelated = async (
     headers: { Authorization: `Bearer ${access_token}` },
   });
 };
+
+export const getArtistTop = async (refreshToken: string, artistId: string) => {
+  const { access_token } = await getAccessToken(refreshToken);
+  return fetch(`${SPOTIFY_API}/artists/${artistId}/top-tracks?market=US`, {
+    headers: { Authorization: `Bearer ${access_token}` },
+  });
+};
+
+export const getTrack = async (refreshToken: string, trackId: string) => {
+  const { access_token } = await getAccessToken(refreshToken);
+  console.log(access_token, trackId);
+  return fetch(`${SPOTIFY_API}/tracks/${trackId}`, {
+    headers: { Authorization: `Bearer ${access_token}` },
+  });
+};
+
+export const getPlaylist = async (refreshToken: string, playlistId: string) => {
+  const { access_token } = await getAccessToken(refreshToken);
+  console.log(access_token, playlistId);
+  return fetch(`${SPOTIFY_API}/playlists/${playlistId}`, {
+    headers: { Authorization: `Bearer ${access_token}` },
+  });
+};

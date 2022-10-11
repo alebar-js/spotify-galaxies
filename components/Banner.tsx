@@ -1,49 +1,41 @@
+import { useState, useContext, useRef, useEffect } from 'react';
+import { useLoader } from 'react-three-fiber';
+import { Track } from '../types';
 import * as THREE from 'three';
-import React, { useContext, useEffect, useRef, useState } from 'react';
-import { useSpring, animated } from '@react-spring/three';
-import { Image } from '../types';
-import {
-  useFrame,
-  useLoader,
-  extend,
-  ReactThreeFiber,
-} from '@react-three/fiber';
+import { motion } from 'framer-motion-3d';
+import { ThreeEvent, extend } from '@react-three/fiber';
+import { useAudio } from './AudioPlayer';
 import { TextGeometry } from 'three/examples/jsm/geometries/TextGeometry';
 import { FontLoader } from 'three/examples/jsm/loaders/FontLoader';
 import gotham from '../public/fonts/helvetiker_regular.typeface.json';
-import { OrbitContext } from './Orbit';
 
-interface ArtistBannerProps {
-  name: string;
-  image: Image;
-  position: THREE.Vector3;
-  noTitle?: Boolean;
-}
-
-declare global {
-  namespace JSX {
-    interface IntrinsicElements {
-      textGeometry: ReactThreeFiber.Object3DNode<
-        TextGeometry,
-        typeof TextGeometry
-      >;
-    }
-  }
-}
+type TrackBannerProps = {
+  topText: string;
+  bottomText: string;
+  imageURL: string;
+  audioSource?: string;
+  textOn: 'always' | 'hover' | 'click';
+  getAudioCallback?: () => Promise<Track>;
+};
 
 extend({ TextGeometry });
 
-const ArtistBanner = ({
-  name,
-  image,
-  position,
-  noTitle,
-}: ArtistBannerProps) => {
-  const ref = useRef<THREE.Mesh>();
-  const textRef = useRef<TextGeometry>();
-  const texture = useLoader(THREE.TextureLoader, image.url);
-  const [hovered, hover] = useState(false);
+const TrackBanner = ({
+  topText,
+  bottomText,
+  imageURL,
+  audioSource,
+  textOn,
+  getAudioCallback,
+}: TrackBannerProps) => {
+  const { setSong, pauseSong, currentSong } = useAudio();
+  const artistNameRef = useRef<TextGeometry>();
+  const titleRef = useRef<TextGeometry>();
+  const font = new FontLoader().parse(gotham);
+  const [clicked, click] = useState(false);
 
+  const [hovered, hover] = useState(false);
+  const texture = useLoader(THREE.TextureLoader, imageURL);
   const materials = [
     new THREE.MeshBasicMaterial({ color: 0xffffff }),
     new THREE.MeshBasicMaterial({ color: 0xffffff }),
@@ -52,39 +44,81 @@ const ArtistBanner = ({
     new THREE.MeshBasicMaterial({ map: texture }),
     new THREE.MeshBasicMaterial({ map: texture }),
   ];
+  const variants = {
+    hover: { scale: 1.2 },
+    rest: { scale: 1 },
+  };
 
-  const font = new FontLoader().parse(gotham);
-  const fontPosition: THREE.Vector3 = new THREE.Vector3(0, 1, 0);
-
+  const handleClick = async (e: ThreeEvent<MouseEvent>) => {
+    e.stopPropagation();
+    let src = undefined;
+    // Retrieve audio from Spotify API on click only with getAudioCallback
+    if (audioSource === '' && getAudioCallback) {
+      src = await getAudioCallback();
+      if (currentSong === src.name) {
+        pauseSong();
+        console.log('paused song');
+      } else {
+        setSong(src.preview_url, src.name);
+      }
+    }
+    // Audio URL is received as props
+    else {
+      if (currentSong === audioSource) pauseSong();
+      else audioSource && setSong(audioSource, topText);
+    }
+  };
+  // Center the texts, need to figure out how to keep this between renders
   useEffect(() => {
-    textRef.current && textRef.current.center();
-    document.body.style.cursor = hovered ? 'pointer' : 'auto';
+    titleRef.current && titleRef.current.center();
+    artistNameRef.current && artistNameRef.current.center();
   });
 
+  const displayText =
+    textOn === 'always' ||
+    (textOn === 'hover' && hovered) ||
+    (textOn === 'click' && clicked);
+
   return (
-    <mesh
-      ref={ref as React.Ref<THREE.Mesh>}
-      position={position}
-      material={materials}
-      onPointerEnter={() => hover(true)}
-      onPointerLeave={() => hover(false)}
-      scale={hovered ? 1.2 : 1}
-    >
-      <mesh position={fontPosition}>
-        {!noTitle && (
+    <motion.group>
+      <motion.mesh position={[0, 1.08, 0]}>
+        {displayText && (
           <textGeometry
-            ref={textRef as React.Ref<TextGeometry>}
+            ref={titleRef as React.Ref<TextGeometry>}
             args={[
-              name,
+              topText,
               { font, size: 0.3, height: 0.01, bevelThickness: 0.1 },
             ]}
           />
         )}
         <meshBasicMaterial color={0xffffff} />
-      </mesh>
-      <boxGeometry args={[1.5, 1.5, 0.2]} />
-    </mesh>
+      </motion.mesh>
+
+      <motion.mesh
+        animate={hovered ? 'hover' : 'rest'}
+        variants={variants}
+        material={materials}
+        onPointerEnter={() => hover(true)}
+        onPointerLeave={() => hover(false)}
+        onClick={(e) => handleClick(e)}
+      >
+        <boxGeometry args={[1.5, 1.5, 0.2]} />
+      </motion.mesh>
+
+      <motion.mesh position={[0, -1.08, 0]}>
+        {displayText && (
+          <textGeometry
+            ref={artistNameRef as React.Ref<TextGeometry>}
+            args={[
+              bottomText,
+              { font, size: 0.3, height: 0.01, bevelThickness: 0.1 },
+            ]}
+          />
+        )}
+        <meshBasicMaterial color={0xffffff} />
+      </motion.mesh>
+    </motion.group>
   );
 };
 
-export default ArtistBanner;
+export default TrackBanner;

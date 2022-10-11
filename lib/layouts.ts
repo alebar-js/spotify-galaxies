@@ -34,8 +34,8 @@ export const helixPositions = (
 ): THREE.Object3D[] => {
   let res = [];
   for (let i = 0, l = n; i < l; i++) {
-    const theta = i * 0.305 + Math.PI;
-    const y = -i * 0.5 + 10;
+    const theta = i * 0.305;
+    const y = -i * 0.3 + 10;
 
     const object = new THREE.Object3D();
 

@@ -9,7 +9,6 @@ import AudioControls from '../components/AudioControls';
 
 const Home: NextPage = () => {
   const [track, setTrack] = useState<Track>();
-  const [volume, setVolume] = useState(0.5);
 
   useEffect(() => {
     fetch('/api/spotify/playlist/1MvhpBIgJUi0KMElQCVDnj')
@@ -36,8 +35,8 @@ const Home: NextPage = () => {
             </h1>
             <p className='m-3'>
               Take a look through your favorite artists and songs in the past
-              month(s) or year, using 3D rendering software. Listen to previews
-              of your favorite tracks, or artists' top tracks!
+              months or year, using 3D rendering software. Listen to previews of
+              your favorite tracks, or artists &apos; top tracks!
             </p>
           </div>
         </div>

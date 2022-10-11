@@ -1,8 +1,9 @@
 import { useState, useContext, useRef, useEffect } from 'react';
 import { useLoader } from 'react-three-fiber';
-import { Track } from '../types';
+import { FontData, Track } from '../types';
 import * as THREE from 'three';
 import { motion } from 'framer-motion-3d';
+import { Text3D, Center, Text } from '@react-three/drei';
 import { ThreeEvent, extend } from '@react-three/fiber';
 import { useAudio } from './AudioPlayer';
 import { TextGeometry } from 'three/examples/jsm/geometries/TextGeometry';
@@ -28,7 +29,7 @@ const TrackBanner = ({
   textOn,
   getAudioCallback,
 }: TrackBannerProps) => {
-  const { setSong, pauseSong, currentSong } = useAudio();
+  const { setSong, pauseSong, currentSong, status, resumeSong } = useAudio();
   const artistNameRef = useRef<TextGeometry>();
   const titleRef = useRef<TextGeometry>();
   const font = new FontLoader().parse(gotham);
@@ -56,16 +57,16 @@ const TrackBanner = ({
     if (audioSource === '' && getAudioCallback) {
       src = await getAudioCallback();
       if (currentSong === src.name) {
-        pauseSong();
-        console.log('paused song');
+        status === 'playing' ? pauseSong() : resumeSong();
       } else {
         setSong(src.preview_url, src.name);
       }
     }
     // Audio URL is received as props
     else {
-      if (currentSong === audioSource) pauseSong();
-      else audioSource && setSong(audioSource, topText);
+      if (currentSong === audioSource) {
+        status === 'playing' ? pauseSong() : resumeSong();
+      } else audioSource && setSong(audioSource, topText);
     }
   };
   // Center the texts, need to figure out how to keep this between renders
@@ -81,17 +82,18 @@ const TrackBanner = ({
 
   return (
     <motion.group>
-      <motion.mesh position={[0, 1.08, 0]}>
-        {displayText && (
-          <textGeometry
-            ref={titleRef as React.Ref<TextGeometry>}
-            args={[
-              topText,
-              { font, size: 0.3, height: 0.01, bevelThickness: 0.1 },
-            ]}
-          />
-        )}
+      <motion.mesh position={[0, 1.1, 0]}>
         <meshBasicMaterial color={0xffffff} />
+        {displayText && (
+          <Center top right>
+            <Text
+              fontSize={0.3}
+              font='http://fonts.cdnfonts.com/css/helvetica-neue-9'
+            >
+              {topText}
+            </Text>
+          </Center>
+        )}
       </motion.mesh>
 
       <motion.mesh
@@ -105,15 +107,16 @@ const TrackBanner = ({
         <boxGeometry args={[1.5, 1.5, 0.2]} />
       </motion.mesh>
 
-      <motion.mesh position={[0, -1.08, 0]}>
+      <motion.mesh position={[0, -0.1, 0]}>
         {displayText && (
-          <textGeometry
-            ref={artistNameRef as React.Ref<TextGeometry>}
-            args={[
-              bottomText,
-              { font, size: 0.3, height: 0.01, bevelThickness: 0.1 },
-            ]}
-          />
+          <Center bottom right>
+            <Text
+              fontSize={0.3}
+              font='http://fonts.cdnfonts.com/css/helvetica-neue-9'
+            >
+              {bottomText}
+            </Text>
+          </Center>
         )}
         <meshBasicMaterial color={0xffffff} />
       </motion.mesh>

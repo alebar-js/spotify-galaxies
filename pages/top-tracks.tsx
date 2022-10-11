@@ -16,7 +16,6 @@ const Test = () => {
   const [layout, setLayout] = useState<LayoutName>('helix');
   const user = session.data?.user;
   const [tracks, setTracks] = useState<Track[]>([]);
-  const cameraRef = useRef();
 
   useEffect(() => {
     fetch('/api/spotify/user/top?type=tracks&limit=50&timeRange=long_term')

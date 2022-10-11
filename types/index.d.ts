@@ -65,3 +65,23 @@ type Planet = {
 };
 
 type LayoutName = 'helix' | 'sphere' | 'table' | 'grid';
+
+// @react-three/fiber
+type FontData = {
+  boundingBox: {
+    yMax: number;
+    yMin: number;
+  };
+  familyName: string;
+  glyphs: {
+    [k: string]: Glyph;
+  };
+  resolution: number;
+  underlineThickness: number;
+};
+
+type Glyph = {
+  _cachedOutline: string[];
+  ha: number;
+  o: string;
+};

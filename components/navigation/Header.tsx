@@ -42,7 +42,7 @@ const Header = () => {
       </div>
     </span>
   ) : (
-    <span className='cursor-pointer absolute' onClick={() => signIn()}>
+    <span className='cursor-pointer' onClick={() => signIn()}>
       Log In
     </span>
   );

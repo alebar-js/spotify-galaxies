@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from 'react';
-import type { NextPage } from 'next';
 import { Canvas } from '@react-three/fiber';
 import { motion } from 'framer-motion-3d';
 import { PlaylistItem, Track } from '../types';
@@ -31,8 +30,8 @@ const Home = () => {
   }, [session.status]);
 
   return (
-    <div className='bg-[#2941AB]'>
-      <div className='h-[calc(100vh-65px)] flex child:h-full'>
+    <div className='min-h-[calc(100vh-65px)] h-1 overflow-auto bg-[#2941AB]'>
+      <div className='h-full py-10 flex child:h-full'>
         <div className='w-[50%] flex items-center justify-center text-[#1ed760] select-none'>
           <div className='m-10'>
             <h1 className='font-extrabold lg:text-6xl self-center'>

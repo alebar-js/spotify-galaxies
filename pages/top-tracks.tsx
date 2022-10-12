@@ -2,12 +2,13 @@ import { motion } from 'framer-motion-3d';
 import * as THREE from 'three';
 import { Canvas, useFrame } from '@react-three/fiber';
 import { useEffect, useRef, useState } from 'react';
-import { SessionContextValue, useSession } from 'next-auth/react';
+import { SessionContextValue, signIn, useSession } from 'next-auth/react';
 import { LayoutName, Track } from '../types';
 import { PerspectiveCamera, TrackballControls } from '@react-three/drei';
 import { getVariants } from '../lib/layouts';
 import Banner from '../components/Banner';
 import styles from '../styles/Top-Tracks.module.css';
+import Router from 'next/router';
 
 const LAYOUT_NAMES: LayoutName[] = ['helix', 'grid', 'sphere'];
 
@@ -38,6 +39,7 @@ const TopTracksPage = () => {
       </button>
     ));
 
+  if (session.status !== 'authenticated') signIn();
   return (
     <div
       style={{

@@ -6,22 +6,29 @@ import { PlaylistItem, Track } from '../types';
 import { TrackballControls } from '@react-three/drei';
 import Banner from '../components/Banner';
 import AudioControls from '../components/AudioControls';
+import { useSession } from 'next-auth/react';
+import { satelliteTrack } from '../util/constants';
 
-const Home: NextPage = () => {
+const Home = () => {
   const [track, setTrack] = useState<Track>();
+  const session = useSession();
 
   useEffect(() => {
-    fetch('/api/spotify/playlist/1MvhpBIgJUi0KMElQCVDnj')
-      .then((res) => {
-        return res.json();
-      })
-      .then((data) => {
-        let tracks = data.items.tracks.items.map(
-          (item: PlaylistItem) => item.track
-        );
-        setTrack(tracks[Math.floor(Math.random() * tracks.length)]);
-      });
-  }, []);
+    if (session.status === 'authenticated') {
+      fetch('/api/spotify/playlist/1MvhpBIgJUi0KMElQCVDnj')
+        .then((res) => {
+          return res.json();
+        })
+        .then((data) => {
+          let tracks = data.items.tracks.items.map(
+            (item: PlaylistItem) => item.track
+          );
+          setTrack(tracks[Math.floor(Math.random() * tracks.length)]);
+        });
+    } else {
+      setTrack(satelliteTrack);
+    }
+  }, [session.status]);
 
   return (
     <div className='bg-[#2941AB]'>
@@ -61,5 +68,7 @@ const Home: NextPage = () => {
     </div>
   );
 };
+
+Home.auth = false;
 
 export default Home;

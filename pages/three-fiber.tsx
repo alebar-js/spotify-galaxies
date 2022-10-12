@@ -108,4 +108,6 @@ const ThreeFiberPage = () => {
   );
 };
 
+ThreeFiberPage.auth = true;
+
 export default ThreeFiberPage;

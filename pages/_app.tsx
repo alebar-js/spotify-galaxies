@@ -10,13 +10,17 @@ import {
 } from 'next-auth/react';
 import { AudioProvider } from '../components/AudioPlayer';
 import Header from '../components/navigation/Header';
-import { GetServerSideProps } from 'next';
 import React from 'react';
+import { NextComponentType } from 'next';
 
-function MyApp({ Component, pageProps }: AppProps) {
+type CustomAppProps = AppProps & {
+  Component: NextComponentType & { auth?: boolean }; // add auth type
+};
+
+function MyApp({ Component, pageProps }: CustomAppProps) {
   return (
     <SessionProvider session={pageProps.session}>
-      <AccessManager>
+      <AccessManager auth={Component.auth}>
         <AudioProvider>
           <Header />
           <Component {...pageProps} />
@@ -28,13 +32,28 @@ function MyApp({ Component, pageProps }: AppProps) {
 
 type AccessManagerType = {
   children: JSX.Element;
+  auth?: boolean;
+};
+
+App.getInitialProps = async (context) => {
+  const appProps = await App.getInitialProps(context);
+  //@ts-ignore
+  const session = await getSession(context);
+
+  return {
+    ...appProps,
+    session,
+  };
 };
 const AccessManager: React.FC<AccessManagerType> = ({
   children,
+  auth,
 }: AccessManagerType) => {
   const session = useSession();
-  if (!session) signIn(); // OR return a login page component
 
+  if (auth) {
+    session.status !== 'authenticated' && signIn();
+  }
   return children;
 };
 

@@ -2,11 +2,12 @@ import styles from '../styles/volume-slider.module.css';
 import React, { useState } from 'react';
 import Image from 'next/image';
 import { useAudio } from './AudioPlayer';
-import playIcon from '../public/play-icon.svg';
-import pauseIcon from '../public/pause-icon.svg';
+import PlaySvg from './svg/play';
+import PauseSvg from './svg/pause';
 
 const AudioControls = () => {
   const { volume, changeVolume, pauseSong, resumeSong } = useAudio();
+
   return (
     <div className='text-center child:cursor-pointer w-full absolute bottom-0 mx-auto '>
       <div className='w-[100px] mx-auto'>
@@ -19,8 +20,26 @@ const AudioControls = () => {
           onChange={(e) => changeVolume(e.target.valueAsNumber)}
         />
       </div>
-      <Image src={playIcon} width={20} height={20} onClick={resumeSong} />
-      <Image src={pauseIcon} width={30} height={30} onClick={pauseSong} />
+      <PlaySvg
+        fill='#fff'
+        onClick={pauseSong}
+        style={{
+          width: 20,
+          height: 20,
+          display: 'inline-block',
+          margin: '0px auto 20px auto',
+        }}
+      />
+      <PauseSvg
+        fill='#fff'
+        onClick={pauseSong}
+        style={{
+          width: 20,
+          height: 20,
+          display: 'inline-block',
+          margin: '0px auto 20px auto',
+        }}
+      />
     </div>
   );
 };

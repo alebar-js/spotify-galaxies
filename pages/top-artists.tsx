@@ -88,5 +88,6 @@ const TopArtistsPage = () => {
 };
 
 TopArtistsPage.title = 'Top Artists';
+TopArtistsPage.auth = true;
 
 export default TopArtistsPage;

@@ -11,7 +11,7 @@ import styles from '../styles/Top-Tracks.module.css';
 
 const LAYOUT_NAMES: LayoutName[] = ['helix', 'grid', 'sphere'];
 
-const Test = () => {
+const TopTracksPage = () => {
   const session: SessionContextValue = useSession();
   const [layout, setLayout] = useState<LayoutName>('helix');
   const user = session.data?.user;
@@ -47,7 +47,7 @@ const Test = () => {
     >
       <div className={styles.buttonsContainer}>{renderButtons()}</div>
       <Canvas
-        camera={{ position: [0, 0, 10] }}
+        camera={{ position: [0, 10, 20] }}
         style={{ width: '100%', height: '100%', top: 0 }}
       >
         <TrackballControls rotateSpeed={12} />
@@ -78,4 +78,7 @@ const Test = () => {
   );
 };
 
-export default Test;
+TopTracksPage.title = 'Top Tracks';
+TopTracksPage.auth = true;
+
+export default TopTracksPage;

@@ -47,6 +47,7 @@ export const getUserTopItems = async (
   timeRange: 'short_term' | 'medium_term' | 'long_term' | '',
   limit: number
 ) => {
+  console.log('getUserTop', type, refreshToken, timeRange, limit);
   const { access_token } = await getAccessToken(refreshToken);
   let lim = limit as unknown as string;
   const params = new URLSearchParams({});
@@ -61,6 +62,7 @@ export const getUserTopItems = async (
 };
 
 export const getArtist = async (refreshToken: string, artistId: string) => {
+  console.log('getArtist', refreshToken, artistId);
   const { access_token } = await getAccessToken(refreshToken);
   return fetch(`${SPOTIFY_API}/artists/${artistId}`, {
     headers: {
@@ -73,6 +75,7 @@ export const getArtistRelated = async (
   refreshToken: string,
   artistId: string
 ) => {
+  console.log('getArtistRelated', refreshToken, artistId);
   const { access_token } = await getAccessToken(refreshToken);
   return fetch(`${SPOTIFY_API}/artists/${artistId}/related-artists`, {
     headers: { Authorization: `Bearer ${access_token}` },
@@ -80,6 +83,7 @@ export const getArtistRelated = async (
 };
 
 export const getArtistTop = async (refreshToken: string, artistId: string) => {
+  console.log('getArtistTop', refreshToken, artistId);
   const { access_token } = await getAccessToken(refreshToken);
   return fetch(`${SPOTIFY_API}/artists/${artistId}/top-tracks?market=US`, {
     headers: { Authorization: `Bearer ${access_token}` },
@@ -87,6 +91,7 @@ export const getArtistTop = async (refreshToken: string, artistId: string) => {
 };
 
 export const getTrack = async (refreshToken: string, trackId: string) => {
+  console.log('getTrack', refreshToken, trackId);
   const { access_token } = await getAccessToken(refreshToken);
   console.log(access_token, trackId);
   return fetch(`${SPOTIFY_API}/tracks/${trackId}`, {
@@ -96,7 +101,7 @@ export const getTrack = async (refreshToken: string, trackId: string) => {
 
 export const getPlaylist = async (refreshToken: string, playlistId: string) => {
   const { access_token } = await getAccessToken(refreshToken);
-  console.log(access_token, playlistId);
+  console.log('getPlaylist', access_token, playlistId);
   return fetch(`${SPOTIFY_API}/playlists/${playlistId}`, {
     headers: { Authorization: `Bearer ${access_token}` },
   });

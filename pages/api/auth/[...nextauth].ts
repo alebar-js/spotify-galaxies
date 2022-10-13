@@ -17,6 +17,7 @@ const options: NextAuthOptions = {
       },
     }),
   ],
+  debug: true,
   jwt: {
     secret: 'test',
   },
@@ -25,9 +26,17 @@ const options: NextAuthOptions = {
       if (account) {
         token.accessToken = account.refresh_token;
       }
+      console.log('=====JWT CALLBACK=====');
+      console.log('token', token);
+      console.log('account', account);
+      console.log('user', user);
       return token;
     },
     session: async ({ token, user, session }) => {
+      console.log('=====SESSION CALLBACK======');
+      console.log('token', token);
+      console.log('session', session);
+      console.log('user', user);
       //@ts-ignore
       session = { ...session, token, ...user };
       return session;

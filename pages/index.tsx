@@ -45,6 +45,8 @@ const Home = () => {
               months or year, using 3D rendering software. Listen to previews of
               your favorite tracks, or artists &apos; top tracks!
             </p>
+            <button>Tracks</button>
+            <button>Artists</button>
           </div>
         </div>
         <div className='w-[50%] relative'>

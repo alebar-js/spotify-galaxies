@@ -26,6 +26,7 @@ const artistTopTracks = async (
   accessToken: string
 ) => {
   const items = await (await getArtistTop(accessToken, artistId)).json();
+  console.log('artistTopRes', items);
   return res.status(200).json({ items });
 };
 
@@ -37,6 +38,7 @@ const artistRandomTopTrack = async (
 ) => {
   const items = await (await getArtistTop(accessToken, artistId)).json();
   let response = items.tracks?.[0];
+  console.log(response);
   return res.status(200).json({ track: response });
 };
 

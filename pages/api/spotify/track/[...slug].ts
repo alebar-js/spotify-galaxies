@@ -20,7 +20,6 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   const trackId = slug?.[0];
   const session = await getSession({ req });
   console.log('SESSION', session);
-  console.log('REQ', req);
   if (!session) return;
 
   if (!trackId) return;

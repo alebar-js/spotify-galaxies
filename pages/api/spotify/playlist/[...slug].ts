@@ -21,7 +21,6 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   const session = await getSession({ req });
   console.log('/API/PLAYLIST');
   console.log('SESSION', session);
-  console.log('REQ', req);
   if (!session) return;
 
   if (!playlistId) return;

@@ -8,12 +8,12 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   const { timeRange, limit, type } = req.query;
 
   const accessToken = session?.token?.accessToken;
-  console.log('SESSION', session);
-  console.log('REQ', req);
 
   //@ts-ignore
   const response = await getUserTopItems(accessToken, type, timeRange, limit);
+  console.log(response);
   const { items } = await response.json();
+  console.log(items);
   return res.status(200).json({ items });
 };
 

@@ -16,6 +16,7 @@ export const getAccessToken = async (refreshToken: string) => {
       refresh_token: refreshToken,
     }),
   });
+  console.log(response);
   return response.json();
 };
 
@@ -54,6 +55,7 @@ export const getUserTopItems = async (
   timeRange && params.append('time_range', timeRange);
   lim && params.append('limit', lim);
   const queryParams = params.toString();
+  console.log('accessToken', access_token);
   return fetch(`${SPOTIFY_API}/me/top/${type}?${queryParams}`, {
     headers: {
       Authorization: `Bearer ${access_token}`,

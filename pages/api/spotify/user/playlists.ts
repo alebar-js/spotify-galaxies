@@ -7,7 +7,6 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   //@ts-ignore
   const response = await getUserPlaylists(session?.token?.accessToken);
   console.log('SESSION', session);
-  console.log('REQ', req);
 
   const { items } = await response.json();
   return res.status(200).json({ items });

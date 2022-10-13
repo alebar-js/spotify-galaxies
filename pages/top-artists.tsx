@@ -11,6 +11,7 @@ import Banner from '../components/Banner';
 const LAYOUT_NAMES: LayoutName[] = ['helix', 'grid', 'sphere'];
 
 const TopArtistsPage = () => {
+  const session = useSession();
   const [layout, setLayout] = useState<LayoutName>('helix');
   const [artists, setArtists] = useState<Artist[]>([]);
 
@@ -24,6 +25,7 @@ const TopArtistsPage = () => {
         data.items.forEach((item: Artist) => {
           artists = [...artists, item];
         });
+        console.log(data);
         setArtists(artists);
       })
       .catch((err) => console.log(err));

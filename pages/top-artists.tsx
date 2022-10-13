@@ -1,7 +1,7 @@
 import { motion } from 'framer-motion-3d';
 import { Canvas, useThree } from '@react-three/fiber';
 import { useEffect, useState } from 'react';
-import { SessionContextValue, useSession } from 'next-auth/react';
+import { SessionContextValue, signIn, useSession } from 'next-auth/react';
 import { LayoutName, Artist, Track } from '../types';
 import { TrackballControls } from '@react-three/drei';
 import { getVariants } from '../lib/layouts';
@@ -11,6 +11,7 @@ import Banner from '../components/Banner';
 const LAYOUT_NAMES: LayoutName[] = ['helix', 'grid', 'sphere'];
 
 const TopArtistsPage = () => {
+  const session = useSession();
   const [layout, setLayout] = useState<LayoutName>('helix');
   const [artists, setArtists] = useState<Artist[]>([]);
 
@@ -44,6 +45,8 @@ const TopArtistsPage = () => {
 
     return track;
   };
+
+  if (session.status !== 'authenticated') signIn();
 
   return (
     <div

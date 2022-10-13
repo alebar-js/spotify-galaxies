@@ -13,9 +13,7 @@ import Router from 'next/router';
 const LAYOUT_NAMES: LayoutName[] = ['helix', 'grid', 'sphere'];
 
 const TopTracksPage = () => {
-  const session: SessionContextValue = useSession();
   const [layout, setLayout] = useState<LayoutName>('helix');
-  const user = session.data?.user;
   const [tracks, setTracks] = useState<Track[]>([]);
 
   useEffect(() => {
@@ -29,8 +27,9 @@ const TopTracksPage = () => {
           tracks = [...tracks, item];
         });
         setTracks(tracks);
-      });
-  }, [user]);
+      })
+      .catch((err) => console.log(err));
+  }, []);
 
   const renderButtons = () =>
     LAYOUT_NAMES.map((layout, i) => (
@@ -38,8 +37,6 @@ const TopTracksPage = () => {
         {layout.toUpperCase()}
       </button>
     ));
-
-  if (session.status !== 'authenticated') signIn();
   return (
     <div
       style={{

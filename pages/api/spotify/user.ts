@@ -1,6 +1,4 @@
-import { SpotifyImage, SpotifyProfile } from 'next-auth/providers/spotify';
 import { NextRequest, NextResponse } from 'next/server';
-import SPOTIFY_API from '../../../util/apiConstants';
 import { getToken } from 'next-auth/jwt';
 
 // will only retrieve currently logged in user, no id needed
@@ -12,9 +10,11 @@ export const getUser = async (req: NextRequest, res: NextResponse) => {
     headers: {
       Authorization: `Bearer ${token}`,
     },
-  }).then((data) => {
-    console.log(data);
-  });
+  })
+    .then((data) => {
+      console.log(data);
+    })
+    .catch((err) => console.log(err));
   return res.json();
 };
 

@@ -51,8 +51,6 @@ const getOrbits = (artists: Artist[]) => {
 };
 
 const ThreeFiberPage = () => {
-  const session: SessionContextValue = useSession();
-  const user = session.data?.user;
   const [topArtists, setTopArtists] = useState<Artist[]>([]);
   const cameraRef = useRef();
 
@@ -67,16 +65,9 @@ const ThreeFiberPage = () => {
           artists = [...artists, item];
         });
         setTopArtists(artists);
-      });
-  }, [user]);
-
-  if (!session) {
-    return (
-      <>
-        <button onClick={() => signIn()}>Sign In</button>
-      </>
-    );
-  }
+      })
+      .catch((err) => console.log(err));
+  }, []);
 
   return (
     <div

@@ -11,7 +11,6 @@ import Banner from '../components/Banner';
 const LAYOUT_NAMES: LayoutName[] = ['helix', 'grid', 'sphere'];
 
 const TopArtistsPage = () => {
-  const session = useSession();
   const [layout, setLayout] = useState<LayoutName>('helix');
   const [artists, setArtists] = useState<Artist[]>([]);
 
@@ -26,7 +25,8 @@ const TopArtistsPage = () => {
           artists = [...artists, item];
         });
         setArtists(artists);
-      });
+      })
+      .catch((err) => console.log(err));
   }, []);
 
   const renderButtons = () =>
@@ -41,12 +41,11 @@ const TopArtistsPage = () => {
     track = await fetch(`/api/spotify/artist/${artistId}/random-top-track`)
       .then((res) => res.json())
       .then((data) => data)
-      .then((res) => res.track);
+      .then((res) => res.track)
+      .catch((err) => console.log(err));
 
     return track;
   };
-
-  if (session.status !== 'authenticated') signIn();
 
   return (
     <div

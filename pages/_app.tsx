@@ -1,13 +1,6 @@
 import '../styles/globals.css';
-import type { AppContext, AppProps } from 'next/app';
-import App from 'next/app';
-import {
-  getSession,
-  SessionContextValue,
-  SessionProvider,
-  signIn,
-  useSession,
-} from 'next-auth/react';
+import type { AppProps } from 'next/app';
+import { SessionProvider } from 'next-auth/react';
 import { AudioProvider } from '../components/AudioPlayer';
 import Header from '../components/navigation/Header';
 import React from 'react';
@@ -27,10 +20,5 @@ function MyApp({ Component, pageProps }: CustomAppProps) {
     </SessionProvider>
   );
 }
-
-type AccessManagerType = {
-  children: JSX.Element;
-  auth?: boolean;
-};
 
 export default MyApp;

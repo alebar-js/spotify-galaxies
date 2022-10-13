@@ -23,7 +23,8 @@ const Home = () => {
             (item: PlaylistItem) => item.track
           );
           setTrack(tracks[Math.floor(Math.random() * tracks.length)]);
-        });
+        })
+        .catch((err) => console.log(err));
     } else {
       setTrack(satelliteTrack);
     }

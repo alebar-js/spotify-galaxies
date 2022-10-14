@@ -11,8 +11,8 @@ const getTrackById = async (
   accessToken: string
 ) => {
   const response = await getTrack(accessToken, trackId);
-  const items = await response.json();
-  return res.status(200).json({ items });
+
+  return res.status(200).json(response.data.items);
 };
 
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {

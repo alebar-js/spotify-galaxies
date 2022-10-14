@@ -15,8 +15,7 @@ const relatedArtists = async (
 ) => {
   const response = await getArtistRelated(accessToken, artistId);
   console.log(response);
-  const items = await response.json();
-  return res.status(200).json({ items });
+  return res.status(200).json(response.data.items);
 };
 
 const artistTopTracks = async (

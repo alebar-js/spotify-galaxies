@@ -22,10 +22,9 @@ const TopArtistsPage = () => {
       })
       .then((data) => {
         let artists: Array<Artist> = [];
-        data.items.forEach((item: Artist) => {
+        data.forEach((item: Artist) => {
           artists = [...artists, item];
         });
-        console.log(data);
         setArtists(artists);
       })
       .catch((err) => console.log(err));
@@ -42,10 +41,7 @@ const TopArtistsPage = () => {
     let track: Track;
     track = await fetch(`/api/spotify/artist/${artistId}/random-top-track`)
       .then((res) => res.json())
-      .then((data) => data)
-      .then((res) => res.track)
       .catch((err) => console.log(err));
-
     return track;
   };
 

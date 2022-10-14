@@ -19,7 +19,7 @@ const Home = () => {
           return res.json();
         })
         .then((data) => {
-          let tracks = data.items.tracks.items.map(
+          let tracks = data.tracks.items.map(
             (item: PlaylistItem) => item.track
           );
           setTrack(tracks[Math.floor(Math.random() * tracks.length)]);

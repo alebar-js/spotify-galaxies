@@ -102,7 +102,8 @@ const TrackBanner = ({
         material={materials}
         onPointerEnter={() => hover(true)}
         onPointerLeave={() => hover(false)}
-        onClick={(e) => handleClick(e)}
+        // onClick={(e) => handleClick(e)}
+        onPointerDown={(e) => handleClick(e)}
       >
         <boxGeometry args={[1.5, 1.5, 0.2]} />
       </motion.mesh>

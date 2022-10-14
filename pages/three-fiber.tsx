@@ -60,8 +60,9 @@ const ThreeFiberPage = () => {
         return res.json();
       })
       .then((data) => {
+        console.log(data);
         let artists: Array<Artist> = [];
-        data.items.forEach((item: Artist) => {
+        data.forEach((item: Artist) => {
           artists = [...artists, item];
         });
         setTopArtists(artists);

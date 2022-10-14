@@ -25,9 +25,9 @@ const artistTopTracks = async (
   res: NextApiResponse,
   accessToken: string
 ) => {
-  const items = await (await getArtistTop(accessToken, artistId)).json();
-  console.log('artistTopRes', items);
-  return res.status(200).json({ items });
+  const response = await getArtistTop(accessToken, artistId);
+
+  return res.status(200).json(response.data.items);
 };
 
 const artistRandomTopTrack = async (
@@ -36,10 +36,12 @@ const artistRandomTopTrack = async (
   res: NextApiResponse,
   accessToken: string
 ) => {
-  const items = await (await getArtistTop(accessToken, artistId)).json();
-  let response = items.tracks?.[0];
-  console.log(response);
-  return res.status(200).json({ track: response });
+  const items = await getArtistTop(accessToken, artistId);
+  return res
+    .status(200)
+    .json(
+      items.data.tracks[Math.floor(Math.random() * items.data.tracks.length)]
+    );
 };
 
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {

@@ -11,8 +11,7 @@ const getPlaylistById = async (
   accessToken: string
 ) => {
   const response = await getPlaylist(accessToken, playlistId);
-  const items = await response.json();
-  return res.status(200).json({ items });
+  return res.status(200).json(response.data);
 };
 
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {

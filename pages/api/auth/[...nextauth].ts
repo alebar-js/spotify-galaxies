@@ -7,6 +7,12 @@ const options: NextAuthOptions = {
     Spotify({
       clientId: process.env.SPOTIFY_CLIENT_ID || '',
       clientSecret: process.env.SPOTIFY_CLIENT_SECRET || '',
+      authorization: {
+        params: {
+          scope:
+            'user-read-private user-read-email user-read-playback-position user-top-read user-read-recently-played',
+        },
+      },
       profile: (profile: SpotifyProfile) => {
         return {
           id: profile.id,

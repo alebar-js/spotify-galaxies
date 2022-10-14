@@ -18,12 +18,10 @@ const TopTracksPage = () => {
 
   useEffect(() => {
     fetch('/api/spotify/user/top?type=tracks&limit=50&timeRange=long_term')
-      .then((res) => {
-        return res.json();
-      })
+      .then((res) => res.json())
       .then((data) => {
         let tracks: Array<Track> = [];
-        data.items.forEach((item: Track) => {
+        data.forEach((item: Track) => {
           tracks = [...tracks, item];
         });
         setTracks(tracks);

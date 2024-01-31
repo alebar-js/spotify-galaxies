@@ -3,8 +3,8 @@ import { Canvas } from '@react-three/fiber';
 import { motion } from 'framer-motion-3d';
 import { PlaylistItem, Track } from '../types';
 import { TrackballControls } from '@react-three/drei';
-import Banner from '../components/Banner';
-import AudioControls from '../components/AudioControls';
+import Banner from '../components/Banner/Banner';
+import AudioControls from '../components/AudioControls/AudioControls';
 import { useSession } from 'next-auth/react';
 import { satelliteTrack } from '../util/constants';
 

@@ -1,14 +1,14 @@
 import { useState, useContext, useRef, useEffect } from 'react';
 import { useLoader } from 'react-three-fiber';
-import { FontData, Track } from '../types';
+import { FontData, Track } from '../../types';
 import * as THREE from 'three';
 import { motion } from 'framer-motion-3d';
 import { Text3D, Center, Text } from '@react-three/drei';
 import { ThreeEvent, extend } from '@react-three/fiber';
-import { useAudio } from './AudioPlayer';
+import { useAudio } from '../../lib/hooks/AudioPlayer';
 import { TextGeometry } from 'three/examples/jsm/geometries/TextGeometry';
 import { FontLoader } from 'three/examples/jsm/loaders/FontLoader';
-import gotham from '../public/fonts/helvetiker_regular.typeface.json';
+import gotham from '../../public/fonts/helvetiker_regular.typeface.json';
 
 type TrackBannerProps = {
   topText: string;

@@ -1,12 +1,9 @@
-import { access } from 'fs';
 import { NextApiRequest, NextApiResponse } from 'next';
-import { JWT } from 'next-auth';
 import { getSession } from 'next-auth/react';
 import { getPlaylist } from '../../../../lib/spotify';
 
 const getPlaylistById = async (
   playlistId: string,
-  req: NextApiRequest,
   res: NextApiResponse,
   accessToken: string
 ) => {
@@ -23,7 +20,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   if (!session) return;
 
   if (!playlistId) return;
-  return getPlaylistById(playlistId, req, res, session.token.accessToken);
+  return getPlaylistById(playlistId, res, session.token.accessToken);
 };
 
 export default handler;

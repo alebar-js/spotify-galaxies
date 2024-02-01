@@ -13,7 +13,7 @@ type CustomAppProps = AppProps & {
 function MyApp({ Component, pageProps }: CustomAppProps) {
   return (
     //@ts-ignore
-    <SessionProvider session={pageProps.session}>
+    <SessionProvider>
       <AudioProvider>
         <Header />
         <Component {...pageProps} />

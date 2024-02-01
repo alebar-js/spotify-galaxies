@@ -1,6 +1,4 @@
 import * as THREE from 'three';
-import TWEEN from '@tweenjs/tween.js';
-import { RefObject } from 'react';
 
 export type ObjectCoords = {
   positions: THREE.Vector3[];

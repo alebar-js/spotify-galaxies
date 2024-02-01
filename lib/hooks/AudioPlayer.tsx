@@ -38,7 +38,7 @@ type AudioProvider = {
 export const AudioProvider: React.FC<AudioProvider> = ({ children }) => {
   const [song, _setSong] = useState<HTMLAudioElement>();
   const [currentSong, setCurrentSong] = useState('');
-  const [volume, _changeVolume] = useState(0.5);
+  const [volume, _changeVolume] = useState(0.35);
   const [status, setStatus] = useState<PlayerStatus>('idle');
 
   const setSong = (url: string, songTitle: string) => {
@@ -48,9 +48,10 @@ export const AudioProvider: React.FC<AudioProvider> = ({ children }) => {
     newSong.play();
     newSong.onended = () => setStatus('idle');
     setStatus('playing');
-    setCurrentSong(url);
+    setCurrentSong(songTitle);
     _setSong(newSong);
   };
+
   const pauseSong = () => {
     setStatus('paused');
     song?.pause();

@@ -1,13 +1,25 @@
-import React from 'react';
-import styles from './LayoutButton.module.css';
+import React from "react";
+import styles from "./LayoutButtonBar.module.css";
 
 interface LayoutButtonProps {
-    label: string;
-    onClick: () => void;
+  children: React.ReactNode;
+  onClick: () => void;
+  selected?: boolean;
 }
 
-const LayoutButton: React.FC<LayoutButtonProps> = ({ label, onClick }) => {
-    return <button className={styles.button} onClick={onClick}>{label}</button>;
+const LayoutButton: React.FC<LayoutButtonProps> = ({
+  children,
+  onClick,
+  selected,
+}) => {
+  return (
+    <button
+      className={`${styles.button} ${selected && styles.buttonSelected}`}
+      onClick={onClick}
+    >
+      {children}
+    </button>
+  );
 };
 
 export default LayoutButton;

@@ -14,11 +14,11 @@ const AudioControls = () => {
           min={0}
           max={1}
           step={0.02}
-          value={volume}
-          onChange={(e) => changeVolume(e.target.valueAsNumber)}
+          value={volume * 2}
+          onChange={(e) => changeVolume(e.target.valueAsNumber / 2)}
         />
       </div>
-      {status === "idle" || status === "paused" ? (
+      {status === "paused" ? (
         <PlaySvg
           fill="#fff"
           onClick={resumeSong}
@@ -30,7 +30,7 @@ const AudioControls = () => {
           }}
         />
       ) : (
-        <PauseSvg
+        status === "playing" && <PauseSvg
           fill="#fff"
           onClick={pauseSong}
           style={{
@@ -39,7 +39,7 @@ const AudioControls = () => {
             display: "inline-block",
             margin: "0px auto 20px auto",
           }}
-        />
+        /> 
       )}
     </div>
   );

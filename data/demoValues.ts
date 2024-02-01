@@ -1,4 +1,4 @@
-const artists = [
+export const demoArtists = [
     {
         "external_urls": {
             "spotify": "https://open.spotify.com/artist/06HL4z0CvFAxyc27GXpf02"

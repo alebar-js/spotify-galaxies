@@ -1,41 +1,38 @@
-import { motion } from 'framer-motion-3d';
-import { Canvas,  } from '@react-three/fiber';
-import { useEffect, useState } from 'react';
-import { useSession } from 'next-auth/react';
-import { LayoutName, Artist, Track } from '../types';
-import { TrackballControls } from '@react-three/drei';
-import { getVariants } from '../lib/layouts';
-import styles from '../styles/Top-Tracks.module.css';
-import Banner from '../components/Banner/Banner';
+import { motion } from "framer-motion-3d";
+import { useEffect, useState } from "react";
+import { LayoutName, Artist, Track } from "../types";
+import { getVariants } from "../lib/layouts";
+import Banner from "../components/Banner/Banner";
+import useLoading from "../lib/hooks/useLoading";
+import { BannerCanvas } from "../components/BannerCanvas";
 
-const LAYOUT_NAMES: LayoutName[] = ['helix', 'grid', 'sphere'];
+const LAYOUT_NAMES: LayoutName[] = ["helix", "grid", "sphere"];
+
+const fetchArtists = () => {
+  return fetch(
+    "/api/spotify/user/top?type=artists&limit=50&timeRange=long_term"
+  )
+    .then((res) => {
+      return res.json();
+    })
+    .then((data) => {
+      let artists: Array<Artist> = [];
+      data.forEach((item: Artist) => {
+        artists = [...artists, item];
+      });
+      return artists;
+    })
+    .catch((err) => console.log(err));
+};
 
 const TopArtistsPage = () => {
-  const [layout, setLayout] = useState<LayoutName>('helix');
+  const [layout, setLayout] = useState<LayoutName>("helix");
   const [artists, setArtists] = useState<Artist[]>([]);
+  const [getArtists, loading] = useLoading(fetchArtists);
 
   useEffect(() => {
-    fetch('/api/spotify/user/top?type=artists&limit=50&timeRange=long_term')
-      .then((res) => {
-        return res.json();
-      })
-      .then((data) => {
-        let artists: Array<Artist> = [];
-        data.forEach((item: Artist) => {
-          artists = [...artists, item];
-        });
-        console.log(artists);
-        setArtists(artists);
-      })
-      .catch((err) => console.log(err));
+    getArtists().then((data) => setArtists(data));
   }, []);
-
-  const renderButtons = () =>
-    LAYOUT_NAMES.map((layout, i) => (
-      <button key={i} onClick={() => setLayout(layout)}>
-        {layout.toUpperCase()}
-      </button>
-    ));
 
   const getTopTrack = async (artistId?: string) => {
     let track: Track;
@@ -48,23 +45,24 @@ const TopArtistsPage = () => {
   return (
     <div
       style={{
-        background: 'linear-gradient(to bottom, #11e8bb 0%, #8200c9 100%)',
+        background: "linear-gradient(to bottom, #11e8bb 0%, #8200c9 100%)",
       }}
-      className='w-full h-[calc(100vh-65px)]'
+      className="w-full h-[calc(100vh-65px)]"
     >
-      <div className={styles.buttonsContainer}>{renderButtons()}</div>
-      <Canvas
-        camera={{ position: [0, 10, 20] }}
-        style={{ width: '100%', height: '100%', top: 0 }}
+      <BannerCanvas
+        selectedLayout={layout}
+        layouts={LAYOUT_NAMES}
+        onLayoutChange={(newLayout) => setLayout(newLayout)}
       >
-        <TrackballControls rotateSpeed={4} />
-        {artists.length > 0 &&
+        {loading ? (
+          <>Loading</>
+        ) : (
           artists.map((artist, i) => {
             return (
               <motion.group
                 animate={layout}
                 transition={{
-                  ease: 'easeInOut',
+                  ease: "easeInOut",
                   duration: Math.random() * 0.5 + 0.5,
                 }}
                 variants={getVariants(i)}
@@ -72,22 +70,23 @@ const TopArtistsPage = () => {
                 onClick={(e) => e.stopPropagation()}
               >
                 <Banner
-                  topText=''
+                  topText=""
                   bottomText={artist.name}
-                  audioSource={''}
-                  textOn='hover'
+                  audioSource={""}
+                  textOn="hover"
                   imageURL={artist.images[0].url}
                   getAudioCallback={() => getTopTrack(artist.id)}
                 />
               </motion.group>
             );
-          })}
-      </Canvas>
+          })
+        )}
+      </BannerCanvas>
     </div>
   );
 };
 
-TopArtistsPage.title = 'Top Artists';
+TopArtistsPage.title = "Top Artists";
 TopArtistsPage.auth = true;
 
 export default TopArtistsPage;

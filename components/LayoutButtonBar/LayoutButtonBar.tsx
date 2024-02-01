@@ -1,19 +1,28 @@
 import React from "react";
 import { LayoutName } from "../../types";
 import styles from "./LayoutButtonBar.module.css";
-
-const LAYOUT_NAMES: LayoutName[] = ["helix", "grid", "sphere"];
+import LayoutButton from "./LayoutButton";
 
 interface ILayoutButtonBarProps {
-  onLayoutChange: (layout: string) => void;
+  onLayoutChange: (layout: LayoutName) => void;
+  layouts: LayoutName[];
+  selectedLayout: LayoutName;
 }
-const LayoutButtonBar = ({ onLayoutChange }: ILayoutButtonBarProps) => {
+const LayoutButtonBar = ({
+  onLayoutChange,
+  layouts,
+  selectedLayout,
+}: ILayoutButtonBarProps) => {
   return (
     <div className={styles.container}>
-      {LAYOUT_NAMES.map((layout, i) => (
-        <button key={i} onClick={() => onLayoutChange(layout)}>
+      {layouts.map((layout, i) => (
+        <LayoutButton
+          key={i}
+          onClick={() => onLayoutChange(layout)}
+          selected={selectedLayout === layout}
+        >
           {layout.toUpperCase()}
-        </button>
+        </LayoutButton>
       ))}
     </div>
   );
